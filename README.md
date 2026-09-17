@@ -2,6 +2,9 @@
 
 Wanted AI Championship 2026 — onboarding game generator (Neulbom demo + create flow).
 
+- **GitHub:** https://github.com/cplahatae-gif/wanted-ai-championship-2026-onboarding-game
+- **Live (Vercel):** https://first-quest-iota.vercel.app
+
 ## Dev
 
 ```bash
