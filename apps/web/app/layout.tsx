@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
+import { Jua } from "next/font/google";
 import "./globals.css";
 
+const jua = Jua({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-game",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "First Quest | HR 온보딩을 플레이able RPG로",
-  description:
-    "Neulbom Labs Day 0 데모로 1분 체험. 가상 회사 문서로 온보딩 게임 초안을 만듭니다.",
+  title: "First Quest | HR 온보딩 RPG",
+  description: "Neulbom Labs Day 0 — 슬라이드 말고 직접 플레이하는 온보딩 게임",
   openGraph: {
-    title: "First Quest — PDF 대신 플레이",
-    description: "Neulbom Labs 7미션 데모 · Create 샘플 초안",
+    title: "First Quest — 온보딩을 게임으로",
+    description: "Neulbom 10미션 RPG 데모",
     url: "https://first-quest-iota.vercel.app",
     siteName: "First Quest",
     locale: "ko_KR",
@@ -19,7 +26,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={jua.variable}>
       <body>{children}</body>
     </html>
   );
