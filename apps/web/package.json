@@ -7,20 +7,22 @@
     "start": "next start -p ${PORT:-3000}",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test game/**/*.test.ts lib/**/*.test.ts"
+    "test": "node --import tsx --test game/**/*.test.ts lib/**/*.test.ts game-3d/**/*.test.ts"
   },
   "dependencies": {
     "gamepack-schema": "*",
     "next": "^15.5.0",
     "phaser": "^3.90.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "@types/three": "^0.180.0"
   }
 }

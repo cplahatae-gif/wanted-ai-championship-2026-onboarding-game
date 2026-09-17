@@ -5,7 +5,17 @@ export type QuestProgress = {
   flags: Set<string>;
 };
 
-const STORAGE_KEY = "first-quest-neulbom-progress-v1";
+const DEFAULT_STORAGE_KEY = "first-quest-neulbom-progress-v1";
+
+let activeStorageKey = DEFAULT_STORAGE_KEY;
+
+export function setProgressStorageKey(key: string): void {
+  activeStorageKey = key;
+}
+
+export function getProgressStorageKey(): string {
+  return activeStorageKey;
+}
 
 export function createInitialProgress(): QuestProgress {
   return { completedQuestIds: [], flags: new Set() };
@@ -34,14 +44,14 @@ export function deserializeProgress(raw: string | null): QuestProgress {
   }
 }
 
-export function loadProgressFromStorage(): QuestProgress {
+export function loadProgressFromStorage(key = activeStorageKey): QuestProgress {
   if (typeof window === "undefined") return createInitialProgress();
-  return deserializeProgress(window.localStorage.getItem(STORAGE_KEY));
+  return deserializeProgress(window.localStorage.getItem(key));
 }
 
-export function saveProgressToStorage(progress: QuestProgress): void {
+export function saveProgressToStorage(progress: QuestProgress, key = activeStorageKey): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, serializeProgress(progress));
+  window.localStorage.setItem(key, serializeProgress(progress));
 }
 
 export function isQuestUnlocked(quest: Quest, progress: QuestProgress): boolean {

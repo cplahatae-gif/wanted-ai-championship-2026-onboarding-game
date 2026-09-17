@@ -84,6 +84,22 @@
       ]
     },
     {
+      "id": "dlg-guide-sync",
+      "lines": [
+        { "speaker": "루나", "text": "중간 체크! 팀 채널과 온보딩 체크리스트를 확인했지?" }
+      ]
+    },
+    {
+      "id": "dlg-quiz-advanced",
+      "lines": [
+        { "speaker": "키오스크", "text": "2차 보안 퀴즈: 외부 USB는?" }
+      ],
+      "choices": [
+        { "id": "no-usb", "text": "정책대로 사용하지 않는다", "setFlag": "security_quiz_advanced" },
+        { "id": "use-usb", "text": "편해서 바로 꽂는다" }
+      ]
+    },
+    {
       "id": "dlg-ending",
       "lines": [
         { "speaker": "루나", "text": "Day 0 클리어! 이제 진짜 온보딩 게임을 만들 준비가 됐어." }
@@ -140,12 +156,36 @@
       "onCompleteFlags": ["q6_done"]
     },
     {
-      "id": "q7-exit",
+      "id": "q7-lab",
+      "title": "실험실 둘러보기",
+      "description": "실험실 POI에서 E키로 장비 체크인을 기록하세요.",
+      "prerequisiteIds": ["q6-security"],
+      "objective": { "type": "interact", "poiId": "poi-lab" },
+      "onCompleteFlags": ["q7_done"]
+    },
+    {
+      "id": "q8-sync",
+      "title": "중간 싱크",
+      "description": "HR 데스크 POI에 도달해 체크리스트를 확인하세요.",
+      "prerequisiteIds": ["q7-lab"],
+      "objective": { "type": "reach", "poiId": "poi-hr" },
+      "onCompleteFlags": ["q8_done"]
+    },
+    {
+      "id": "q9-quiz",
+      "title": "2차 보안 퀴즈",
+      "description": "보안 키오스크에서 고급 퀴즈를 통과하세요.",
+      "prerequisiteIds": ["q8-sync"],
+      "objective": { "type": "flag", "flag": "security_quiz_advanced" },
+      "onCompleteFlags": ["q9_done"]
+    },
+    {
+      "id": "q10-exit",
       "title": "Day 0 마무리",
       "description": "퇴근 게이트에 도달해 루나의 엔딩 대사를 보세요.",
-      "prerequisiteIds": ["q6-security"],
+      "prerequisiteIds": ["q9-quiz"],
       "objective": { "type": "reach", "poiId": "poi-exit" },
-      "onCompleteFlags": ["q7_done", "day0_complete"]
+      "onCompleteFlags": ["q10_done", "day0_complete"]
     }
   ]
 }

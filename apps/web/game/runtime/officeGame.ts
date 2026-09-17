@@ -1,5 +1,6 @@
 import type { GamePack } from "gamepack-schema";
 import * as Phaser from "phaser";
+import { buildCompletionReport } from "../completionReport";
 import {
   allQuestsComplete,
   completeQuest,
@@ -23,7 +24,8 @@ export type GameUiState = {
   visitedPoiIds: Set<string>;
 };
 
-export function createOfficeScene(pack: GamePack) {
+export function createOfficeScene(pack: GamePack, storageKey: string) {
+  const lastQuestId = pack.quests[pack.quests.length - 1]?.id;
   return class OfficeScene extends Phaser.Scene {
     private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -40,7 +42,7 @@ export function createOfficeScene(pack: GamePack) {
 
     create() {
       this.ui = {
-        progress: loadProgressFromStorage(),
+        progress: loadProgressFromStorage(storageKey),
         activeQuestTitle: "",
         hudLines: [],
         dialogue: null,
@@ -155,7 +157,12 @@ export function createOfficeScene(pack: GamePack) {
         this.ui.talkedNpcIds.add(npcId);
         const npc = npcById(pack, npcId);
         if (!npc) return;
-        const dialogue = pack.dialogues.find((d) => d.id === npc.dialogueId);
+        const activeForDialogue = getActiveQuest(pack, this.ui.progress);
+        let dialogueId = npc.dialogueId;
+        if (activeForDialogue?.id === "q9-quiz" && npcId === "npc-security") {
+          dialogueId = "dlg-quiz-advanced";
+        }
+        const dialogue = pack.dialogues.find((d) => d.id === dialogueId);
         if (!dialogue) return;
         const first = dialogue.lines[0];
         this.ui.dialogue = {
@@ -201,7 +208,7 @@ export function createOfficeScene(pack: GamePack) {
           }
           this.ui.dialogue = null;
           this.dialogueText.setText("");
-          saveProgressToStorage(this.ui.progress);
+          saveProgressToStorage(this.ui.progress, storageKey);
         });
       });
     }
@@ -211,8 +218,8 @@ export function createOfficeScene(pack: GamePack) {
       while (active) {
         if (!isObjectiveMet(pack, active, this.ui.progress, this.ui)) break;
         this.ui.progress = completeQuest(this.ui.progress, active);
-        saveProgressToStorage(this.ui.progress);
-        if (active.id === "q7-exit") {
+        saveProgressToStorage(this.ui.progress, storageKey);
+        if (lastQuestId && active.id === lastQuestId) {
           this.ui.endingVisible = true;
           const ending = pack.dialogues.find((d) => d.id === "dlg-ending");
           if (ending?.lines[0]) {
@@ -221,6 +228,13 @@ export function createOfficeScene(pack: GamePack) {
               text: ending.lines[0].text,
             };
             this.dialogueText.setText(`${ending.lines[0].speaker}: ${ending.lines[0].text}`);
+          }
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(
+              new CustomEvent("first-quest-complete", {
+                detail: buildCompletionReport(pack, this.ui.progress),
+              }),
+            );
           }
         }
         active = getActiveQuest(pack, this.ui.progress);
@@ -250,8 +264,10 @@ export function createOfficeScene(pack: GamePack) {
 export function mountOfficeGame(
   parent: HTMLElement,
   pack: GamePack,
+  options?: { storageKey?: string },
 ): Phaser.Game {
-  const OfficeScene = createOfficeScene(pack);
+  const storageKey = options?.storageKey ?? "first-quest-neulbom-progress-v2";
+  const OfficeScene = createOfficeScene(pack, storageKey);
   return new Phaser.Game({
     type: Phaser.AUTO,
     width: Math.min(pack.map.width * pack.map.tileSize, 960),

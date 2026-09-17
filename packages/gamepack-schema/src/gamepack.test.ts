@@ -12,7 +12,7 @@ test("Neulbom fixture parses", () => {
   const raw = JSON.parse(readFileSync(fixturePath, "utf8"));
   const pack = parseGamePack(raw);
   assert.equal(pack.meta.companyName, "Neulbom Labs");
-  assert.equal(pack.quests.length, 7);
+  assert.equal(pack.quests.length, 10);
 });
 
 test("broken pack is rejected", () => {

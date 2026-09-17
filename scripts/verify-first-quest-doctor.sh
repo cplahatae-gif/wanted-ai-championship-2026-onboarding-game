@@ -2,7 +2,7 @@
 set -euo pipefail
 BASE="${VERIFY_BASE_URL:-http://127.0.0.1:3100}"
 echo "doctor base=${BASE}"
-for path in / /demo /create; do
+for path in / /demo /create /demo-3d; do
   code="$(curl -s -o /dev/null -w '%{http_code}' "${BASE}${path}")"
   echo "GET ${path} -> ${code}"
   if [[ "${code}" != "200" ]]; then

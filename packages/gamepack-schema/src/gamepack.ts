@@ -55,6 +55,7 @@ export const QuestSchema = z.object({
   prerequisiteIds: z.array(z.string()),
   objective: QuestObjectiveSchema,
   onCompleteFlags: z.array(z.string()).default([]),
+  sourceRefs: z.array(z.string()).optional(),
 });
 
 export const PoiSchema = z.object({
