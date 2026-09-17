@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|--------|
-| Git SHA | `54275fb` (branch `main`) |
+| Git SHA | `72e5289` (branch `main`; app unchanged since `54275fb`) |
 | Production URL | https://first-quest-iota.vercel.app |
 | Captured | 2026-09-18 KST |
 | Purpose | Judge loop fixed artifact (see `docs/contest/JUDGE-LOOP.md`) |
