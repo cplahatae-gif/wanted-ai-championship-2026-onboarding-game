@@ -6,7 +6,11 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "npm run build -w first-quest-web",
     "typecheck": "npm run typecheck -w first-quest-web && npm run typecheck -w gamepack-schema",
     "test": "npm run test -w gamepack-schema"
+  },
+  "devDependencies": {
+    "next": "^15.5.0"
   }
 }
