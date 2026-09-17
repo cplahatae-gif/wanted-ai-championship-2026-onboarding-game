@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "id": "neulbom-labs-day0",
+    "title": "Neulbom Labs Day 0",
+    "companyName": "Neulbom Labs",
+    "version": "1.0.0",
+    "locale": "ko"
+  },
+  "visual": {
+    "palette": ["#1a1a2e", "#16213e", "#e94560"],
+    "templateId": "office-topdown",
+    "backgroundId": "neulbom-open-plan"
+  },
+  "map": {
+    "width": 24,
+    "height": 16,
+    "spawn": { "x": 4, "y": 8 },
+    "tileSize": 32
+  },
+  "pois": [
+    { "id": "poi-lobby", "label": "로비", "position": { "x": 4, "y": 8 }, "radius": 48 },
+    { "id": "poi-desk", "label": "내 자리", "position": { "x": 12, "y": 6 }, "radius": 40 },
+    { "id": "poi-kitchen", "label": "휴게실", "position": { "x": 18, "y": 10 }, "radius": 44 },
+    { "id": "poi-lab", "label": "실험실", "position": { "x": 16, "y": 4 }, "radius": 44 },
+    { "id": "poi-hr", "label": "HR 데스크", "position": { "x": 8, "y": 4 }, "radius": 40 },
+    { "id": "poi-exit", "label": "퇴근 게이트", "position": { "x": 20, "y": 12 }, "radius": 48 }
+  ],
+  "npcs": [
+    {
+      "id": "npc-guide",
+      "name": "루나 (온보딩 버디)",
+      "position": { "x": 5, "y": 7 },
+      "dialogueId": "dlg-guide-welcome"
+    },
+    {
+      "id": "npc-hr",
+      "name": "민지 (HR)",
+      "position": { "x": 8, "y": 5 },
+      "dialogueId": "dlg-hr-policy"
+    },
+    {
+      "id": "npc-lead",
+      "name": "Jay (팀 리드)",
+      "position": { "x": 12, "y": 5 },
+      "dialogueId": "dlg-lead-tools"
+    },
+    {
+      "id": "npc-security",
+      "name": "보안 키오스크",
+      "position": { "x": 16, "y": 5 },
+      "dialogueId": "dlg-security-quiz"
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "dlg-guide-welcome",
+      "lines": [
+        { "speaker": "루나", "text": "Neulbom Labs에 온 걸 환영해! 오늘은 Day 0 시뮬레이션이야." }
+      ]
+    },
+    {
+      "id": "dlg-hr-policy",
+      "lines": [
+        { "speaker": "민지", "text": "가상 기밀 정책을 확인했지? 실제 고객 데이터는 절대 업로드하지 마." }
+      ],
+      "choices": [
+        { "id": "agree", "text": "확인했어요", "setFlag": "hr_policy_ack" }
+      ]
+    },
+    {
+      "id": "dlg-lead-tools",
+      "lines": [
+        { "speaker": "Jay", "text": "우리 팀은 GamePack JSON이 진실의 원천이야. 스키마부터 익혀보자." }
+      ]
+    },
+    {
+      "id": "dlg-security-quiz",
+      "lines": [
+        { "speaker": "키오스크", "text": "피싱 메일을 받으면?" }
+      ],
+      "choices": [
+        { "id": "report", "text": "보안 채널에 신고", "setFlag": "security_quiz_pass" },
+        { "id": "click", "text": "링크를 눌러본다" }
+      ]
+    },
+    {
+      "id": "dlg-ending",
+      "lines": [
+        { "speaker": "루나", "text": "Day 0 클리어! 이제 진짜 온보딩 게임을 만들 준비가 됐어." }
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "id": "q1-welcome",
+      "title": "로비에서 버디 만나기",
+      "description": "루나와 대화해 Day 0를 시작하세요.",
+      "prerequisiteIds": [],
+      "objective": { "type": "talk", "npcId": "npc-guide" },
+      "onCompleteFlags": ["q1_done"]
+    },
+    {
+      "id": "q2-desk",
+      "title": "내 자리 찾기",
+      "description": "오픈 플랜에서 내 책상 POI에 도달하세요.",
+      "prerequisiteIds": ["q1-welcome"],
+      "objective": { "type": "reach", "poiId": "poi-desk" },
+      "onCompleteFlags": ["q2_done"]
+    },
+    {
+      "id": "q3-hr",
+      "title": "HR 정책 확인",
+      "description": "민지에게서 가상 기밀 정책에 동의하세요.",
+      "prerequisiteIds": ["q2-desk"],
+      "objective": { "type": "flag", "flag": "hr_policy_ack" },
+      "onCompleteFlags": ["q3_done"]
+    },
+    {
+      "id": "q4-tools",
+      "title": "팀 도구 소개",
+      "description": "Jay와 대화해 GamePack 워크플로를 들으세요.",
+      "prerequisiteIds": ["q3-hr"],
+      "objective": { "type": "talk", "npcId": "npc-lead" },
+      "onCompleteFlags": ["q4_done"]
+    },
+    {
+      "id": "q5-kitchen",
+      "title": "휴게실 탐험",
+      "description": "휴게실 POI에서 E키로 휴식을 기록하세요.",
+      "prerequisiteIds": ["q4-tools"],
+      "objective": { "type": "interact", "poiId": "poi-kitchen" },
+      "onCompleteFlags": ["q5_done"]
+    },
+    {
+      "id": "q6-security",
+      "title": "보안 퀴즈",
+      "description": "보안 키오스크에서 올바른 선택을 하세요.",
+      "prerequisiteIds": ["q5-kitchen"],
+      "objective": { "type": "flag", "flag": "security_quiz_pass" },
+      "onCompleteFlags": ["q6_done"]
+    },
+    {
+      "id": "q7-exit",
+      "title": "Day 0 마무리",
+      "description": "퇴근 게이트에 도달해 루나의 엔딩 대사를 보세요.",
+      "prerequisiteIds": ["q6-security"],
+      "objective": { "type": "reach", "poiId": "poi-exit" },
+      "onCompleteFlags": ["q7_done", "day0_complete"]
+    }
+  ]
+}

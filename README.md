@@ -15,13 +15,16 @@ Opens http://127.0.0.1:3100 by default.
 
 ## Verify
 
+Local (port **3100**):
+
+```bash
+export VERIFY_BASE_URL=http://127.0.0.1:3100
+./scripts/verify-first-quest-doctor.sh
+cd apps/web && npm run typecheck && npm test && npm run build
+cd ../.. && npm test
+```
+
 - English: `.cursor/skills/verify-first-quest/SKILL.md`
 - 한글: `.cursor/skills/verify-first-quest-ko/SKILL.md`
 
-Or run:
-
-```bash
-./scripts/verify-first-quest-doctor.sh
-```
-
-Program plan: `docs/first-quest-pstack-program.md`.
+Program plan: `docs/first-quest-pstack-program.md`. Sprint 0 submit draft: `docs/submit-2026-09-20.md`.

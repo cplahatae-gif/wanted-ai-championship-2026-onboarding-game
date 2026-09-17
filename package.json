@@ -1,0 +1,12 @@
+{
+  "name": "first-quest-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck -w first-quest-web && npm run typecheck -w gamepack-schema",
+    "test": "npm run test -w gamepack-schema"
+  }
+}
