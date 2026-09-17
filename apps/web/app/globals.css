@@ -1,0 +1,131 @@
+:root {
+  --fq-bg: #0f1419;
+  --fq-surface: #1a2332;
+  --fq-accent: #e94560;
+  --fq-accent-dim: #c73a52;
+  --fq-text: #f0f4f8;
+  --fq-muted: #94a3b8;
+  --fq-play: #3dd68c;
+  --fq-border: #2d3a4f;
+  font-family: "Pretendard", "Apple SD Gothic Neo", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fq-bg);
+  color: var(--fq-text);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--fq-play);
+}
+
+.fq-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.fq-btn:active {
+  transform: scale(0.98);
+}
+
+.fq-btn-play {
+  background: linear-gradient(135deg, var(--fq-play), #2eb872);
+  color: #062a18;
+  box-shadow: 0 8px 24px rgba(61, 214, 140, 0.35);
+}
+
+.fq-btn-play:hover {
+  box-shadow: 0 10px 32px rgba(61, 214, 140, 0.45);
+}
+
+.fq-btn-ghost {
+  background: transparent;
+  color: var(--fq-muted);
+  border: 1px solid var(--fq-border);
+  font-weight: 600;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+}
+
+.fq-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--fq-surface);
+  border: 1px solid var(--fq-border);
+  font-size: 0.75rem;
+  color: var(--fq-muted);
+}
+
+.fq-dialogue-panel {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--fq-surface);
+  border: 1px solid var(--fq-accent);
+  border-radius: 8px;
+  max-width: 960px;
+}
+
+.fq-dialogue-panel strong {
+  color: var(--fq-accent);
+}
+
+.fq-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.fq-stepper li {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--fq-surface);
+  border: 1px solid var(--fq-border);
+  font-size: 0.85rem;
+}
+
+.fq-stepper li[aria-current="step"] {
+  border-color: var(--fq-play);
+  color: var(--fq-play);
+}
+
+.fq-outline {
+  background: var(--fq-surface);
+  border: 1px solid var(--fq-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.fq-outline ol {
+  margin: 8px 0 0;
+  padding-left: 1.2rem;
+}
+
+.fq-badge-draft {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  background: #3d2a00;
+  color: #fbbf24;
+  border-radius: 4px;
+}

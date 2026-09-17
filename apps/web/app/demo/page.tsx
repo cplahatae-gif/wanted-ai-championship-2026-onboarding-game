@@ -1,10 +1,9 @@
-import { DemoGame } from "@/components/DemoGame";
+import { DemoGame, DemoPageChrome } from "@/components/DemoGame";
 
 export default function DemoPage() {
   return (
-    <main data-testid="demo-main">
-      <h1>Neulbom Labs</h1>
+    <DemoPageChrome>
       <DemoGame />
-    </main>
+    </DemoPageChrome>
   );
 }

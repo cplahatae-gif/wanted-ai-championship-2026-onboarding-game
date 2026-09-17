@@ -1,19 +1,40 @@
 import Link from "next/link";
+import { HeroPreview } from "@/components/HeroPreview";
+import { ShareStrip } from "@/components/ShareStrip";
 
 export default function HomePage() {
   return (
-    <main data-testid="landing-main" style={{ maxWidth: 720, margin: "0 auto", padding: 24 }}>
-      <h1>First Quest</h1>
-      <p>HR 인터뷰와 문서를 바탕으로 신입 온보딩을 플레이 가능한 2D RPG로 만듭니다.</p>
-      <p>공개 데모는 가상의 <strong>Neulbom Labs</strong>만 사용합니다.</p>
-      <nav aria-label="Primary" style={{ display: "flex", gap: 16, marginTop: 24 }}>
-        <Link href="/demo" data-testid="cta-demo">
+    <main
+      data-testid="landing-main"
+      style={{
+        maxWidth: 960,
+        margin: "0 auto",
+        padding: "32px 24px 48px",
+      }}
+    >
+      <span className="fq-chip">Wanted AI Championship 2026 · First Quest</span>
+      <h1 style={{ fontSize: "2rem", margin: "12px 0 8px", lineHeight: 1.25 }}>
+        HR 온보딩을
+        <br />
+        <span style={{ color: "var(--fq-play)" }}>플레이 가능한 2D RPG</span>
+        로
+      </h1>
+      <p style={{ color: "var(--fq-muted)", maxWidth: 520, margin: "0 0 20px" }}>
+        신입 첫날, 슬라이드 대신 Neulbom Labs Day 0를 직접 플레이하세요. 문서·인터뷰로
+        우리 회사 버전 초안도 만들 수 있습니다.
+      </p>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+        <Link href="/demo" className="fq-btn fq-btn-play" data-testid="cta-demo">
           Neulbom 데모 플레이
         </Link>
-        <Link href="/create" data-testid="cta-create">
+        <Link href="/create" className="fq-btn fq-btn-ghost" data-testid="cta-create">
           우리 회사 게임 만들기
         </Link>
-      </nav>
+      </div>
+
+      <HeroPreview />
+      <ShareStrip />
     </main>
   );
 }
