@@ -14,11 +14,16 @@ Wanted AI Championship 2026 **대상(1팀)**. 예선 TOP20 + 본선에서 기획
 - Local verify: doctor + unit tests pass on port 3100.
 - Vercel `first-quest`: production alias regressed during monorepo deploy experiments; **infra track paused** until project install/build SSOT (`npm ci` at repo root) is confirmed green.
 
-## Blocked until research lands
+## Research (landed 2026-09-18)
 
-- PR-04+ spawn
-- UI polish PRs without moodboard citation
-- Judge loop scored reviews without `docs/contest/context/JUDGING.md`
+- Track R: official `docs/contest/context/*` (landing + terms SSOT)
+- Track B1–B3: `docs/contest/research/*` (17+20+18 candidates)
+- R0 submission folder: `docs/contest/submissions/R0/`
+
+## Blocked until judge loop
+
+- PR-04+ spawn after R0 dual judge PASS (or operator waiver)
+- UI polish PRs without moodboard citation in PR body
 
 ## Parallel research (in flight)
 

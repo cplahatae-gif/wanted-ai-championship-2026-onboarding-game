@@ -117,3 +117,73 @@ Sources: product docs, help centers, and UX pattern literature (Sep 2026). Scope
 - **Transfer handoff:** Learnster “transfer to LMS for manual refinement” → export GamePack JSON for engineer/authoring tool.
 - **Publish variants:** ROSI “Publish only” vs “Publish & Launch” → “Save pack” vs “Publish playable link.”
 - **First-run publish wizard:** v0/Lovable collect URL, visibility, metadata once, then “Publish changes” for updates.
+
+---
+
+## B3 Contest & demo patterns
+
+Sources: official contest pages, Devpost/MLH organizer docs, winning “Try it out” submissions, and championship event landings (Sep 2026 desk research). Scoped to **working public URL**, **≤3-minute demo**, **public-vote hooks**, and **championship / award landing pages** relevant to **Wanted AI Championship 2026** (예선 80% judge + 20% vote; 인기상 100% vote among TOP20; Demo Day 10/17; dead service link can be excluded).
+
+### Candidate inventory (18)
+
+| name | URL | pattern | one-line why for First Quest |
+| --- | --- | --- | --- |
+| **Wanted AI Championship 2026** ★ | https://event.wanted.co.kr/ai-championship/2026 · rules recap https://www.venturesquare.net/1109725/ · listing https://www.univ20.com/ContestCalendar/Detail/1922 | Contest SSOT: deploy a **working service link**; prelims 9/21–10/5; TOP20 10/7; Demo Day 10/17; 인기상 = TOP20 max votes | Hard gate for this repo: URL must stay up through voting + Demo Day; 20% of prelim score and 100% of Popularity Award are votes. |
+| **Devpost 3-min demo playbook** ★ | https://info.devpost.com/blog/6-tips-for-making-a-hackathon-demo-video · https://help.devpost.com/article/84-video-making-best-practices · https://info.devpost.com/blog/how-to-present-a-successful-hackathon-demo | Elevator in first seconds; **screencast of the app**, not a deck; public YouTube; script the 3 minutes; skip login flows | Canonical judge-facing tape for 10/17: problem → working play → impact. Backup recording if live Phaser dies. |
+| **The AI Champion Ship (LiquidMetal)** ★ | https://liquidmetal.devpost.com/ | Championship event page: **Live Deployed App** + public **≤3 min** video + Audience Favourite vote track; “Vibe. Code. Ship.” | Closest peer contest: working URL is a required artifact; vote is a named prize; submission quality (description + video) is an explicit criterion. |
+| **Wingspan / Finch landing** ★ | https://devpost.com/software/wingspan | Product landing *is* the hack: animated hero + **in-hero autofill mock** so value lands without a video | Steal for `/`: one interactive loop (new hire walks / quest HUD) instead of a wall of screenshots. |
+| **GreenBorrow (Try it out + Demo Login)** ★ | https://devpost.com/software/greenborrow · live https://green-borrow.vercel.app | Devpost “Try it out” block: live Vercel URL + **Demo Login** that skips auth | Pattern for Wanted voters: one click from listing → playable `/demo` with no account. |
+| Reskilll 3-minute pitch clock | https://reskilll.com/blogs/hackathon-demo-presentation-tips-pitch-3-minutes-win-2026/ | Timed script: 0:20 hook → 0:40 solution → **0:40–2:30 live demo** → 20s tech/impact → 10s close; backup video on crash | Concrete Demo Day rundown that maps onto the existing 30s Korean script (expand, do not replace). |
+| MLH standard rules + judging plan | https://github.com/MLH/mlh-policies/blob/main/standard-hackathon-rules.md · https://guide.mlh.io/general-information/judging-and-submissions/judging-plan | Public ≤2 min demo video; **show the hack, not a pitch**; video must stay public or prizes can be revoked | Reinforces Wanted’s “작동하는 서비스” rule: judges score what they can operate, not slides. |
+| TellMe (Champion Ship submit) | https://devpost.com/software/tellme-defpqh · live https://tell-me-raindrop.vercel.app | Championship entry: live URL first, one-sentence hook (“Click. Listen. Understand.”), track badges | Proof that a Champion Ship page + one public URL is enough for judges to start; copy the “one verb” hook. |
+| Conceptry | https://devpost.com/software/conceptry-ia7vft · live https://conceptry.vercel.app/ | Hero screenshot + YouTube + GitHub + **Site Link** in one Demo block | Submission surface First Quest should match: landing + `/demo` + short video + stack list. |
+| TripMates (HackUPC 2025 1st) | https://github.com/adriablancafort/tripmates-hackupc2025 · live https://tripmates-hackupc2025.vercel.app | Winner homepage field = **live Vercel**, demo video linked from README | Winning teams treat the public URL as the trophy case, not an afterthought. |
+| TreeHacks championship landing | https://treehacks.com/ · live ops https://live.treehacks.com/ | Event hero: date, one-line mission, track wheel, FAQ, **Devpost →** on the live site | Visual language for “championship,” not a generic SaaS splash—useful for `/` prize/track chrome during voting. |
+| PennApps XXIV | https://2024f.pennapps.com/ | Apply-now hero + FAQ clusters + track/prize deep links | Secondary championship-landing reference: one primary CTA, logistics below the fold. |
+| HackHQ audience voting / gallery | https://hackhq.io/docs/participant-voting · https://hackhq.io/docs/events/project-gallery · https://hackhq.io/judging/top-picks | Shareable vote link, **no account**, gallery cards with demo + GitHub, QR on event links | How voters actually browse: card → embedded demo. First Quest landing must look good as a thumbnail + deep link. |
+| ScoreJudge audience vote | https://scorejudge.com/docs/audience-voting/ · https://scorejudge.com/audience-voting/ | One shared URL + **QR on the big screen**; phone browser, no app | Demo Day and social-share pattern: QR on `/` and on slides so Wanted users vote in <10s. |
+| Since AI 2026 rules | https://sinceai2026.devpost.com/rules | Working prototype + public vote as **qualifier** (top 5 votes → finals); inaccessible = exclude | Confirms the Wanted-style rule: dead URL is a disqualifier, not a style issue. |
+| DEV Comfort Food — Perfect Landing (Mâm Cơm) | https://dev.to/devteam/congrats-to-the-frontend-challenge-comfort-food-edition-winners-1l8 | Award for an **interactive landing** (spin the tray; keyboard + ARIA), not a brochure | Landing can *be* the demo. First Quest `/` should invite play, not only describe it. |
+| Doable.AI | https://devpost.com/software/doable-ai | Gamified productivity winner; product metaphor in the first line | Hook copy pattern: name the feeling (“onboarding as a game”) before the stack. |
+| Navattic / SaaS video-hero pattern | https://www.navattic.com/blog/interactive-demos · video-hero survey https://saaslandingpage.com/articles/25-brilliant-video-landing-page-examples-to-spark-your-inspiration/ · split-video block https://www.shadcn-ui-blocks.com/blocks/marketing/hero-sections/split-with-video | Hero = outcome headline + **Watch demo / Try** pair; interactive tour in-fold; demos ≤90s for cold traffic | Visual system for `/` after Sprint 0: playable right column, 3-min tape as secondary CTA. |
+
+★ = **Top 5** selected for First Quest (see summary below).
+
+### Top 5 rationale (short)
+
+1. **Wanted AI Championship 2026** — The only source that sets *this* scoring math. Working URL is a participation condition (VentureSquare: if the service is down during review, the entry can be dropped). Prelim mix is 80% internal judges / 20% online votes; 인기상 is 100% votes among TOP20. Design the public URL for **two audiences at once**: Wanted voters (9/21–10/5) and Demo Day judges (10/17).
+2. **Devpost 3-min demo playbook** — Cross-hackathon standard: open with the elevator, **show the product running**, keep the tape public, script the clock, upload early. Devpost Help explicitly prefers a narrated screencast over a marketing montage. This is the 10/17 Demo Day tape and the backup if Phaser fails live.
+3. **The AI Champion Ship (LiquidMetal)** — Championship-branded peer contest that *requires* a live deployed app, a public ≤3 min video that matches the live app, and runs a named **Audience Favourite** vote. Submission quality (description + video) is a judging criterion, not decoration.
+4. **Wingspan / Finch** — Winning-grade landing where the **hero interaction is the demo** (live autofill mock, With/Without comparison). First Quest `/` should sell “play the first day” in one motion, not a feature grid.
+5. **GreenBorrow** — Smallest complete “working URL” kit: live Vercel, Devpost **Try it out** block, **Demo Login** so judges never bounce on auth. Maps 1:1 to First Quest `/demo` (Neulbom, no login) as the vote/judge entry.
+
+### Patterns to steal (non-visual)
+
+- **URL is the submission.** Wanted, LiquidMetal, Since AI, MLH: if the link 404s or needs a private login, the project is unevaluable. Keep `https://first-quest-iota.vercel.app` (and `/demo`, `/create`) green through 10/17; no “it works on localhost.”
+- **Guest path in one click.** GreenBorrow Demo Login; Devpost “skip mundane credential flows.” First Quest already has this: primary CTA = **Neulbom 데모 플레이**, not “Sign in.”
+- **3-minute clock (Reskilll + Devpost + LiquidMetal).** 0:00–0:20 problem (PDF onboarding forgets), 0:20–0:40 name the product, 0:40–2:30 **one complete play** (open `/` → `/demo` → core action E-interact → Day 0 result), 2:30–2:50 stack + AI usage + scale, 2:50–3:00 close. Do not open a code editor. Record a backup before Demo Day.
+- **Vote hook is a shareable artifact, not a speech.** HackHQ/ScoreJudge: gallery card + QR + no-account vote. Landing needs a **copy-link / QR / one-sentence hook** so Wanted users can vote after 30 seconds of play. LiquidMetal and Wanted both run a popularity track in parallel with judges.
+- **Online page = second pitch.** Devpost: problem, what it does, impact, screenshots, video, tech, teammates. Wanted form already asks problem / AI usage / stack—mirror that on `/` so a voter who never opens the form still gets the story.
+- **Championship landing language.** TreeHacks / LiquidMetal / Wanted: date, prize, one mission line, primary CTA. Avoid generic “AI platform” hero; say the outcome (playable first day) and the proof (public demo, fictional employer only).
+- **Interactive hero beats screenshot dump.** Wingspan autofill; Mâm Cơm spin-the-tray; Navattic in-fold tour. First Quest: looped Phaser slice or GIF of quest HUD in the hero, with **Play** as the only filled button.
+- **Tape must match the live app.** LiquidMetal: “Application must function consistently as demonstrated in your video.” Do not demo half-built `/create` paths; show `/demo` perfectly.
+- **Keep updating after submit.** Devpost: fans (voters) return to the live URL. A changelog or “what judges will click” strip on `/` reduces bounce during the 9/21–10/5 window.
+
+### Anti-patterns to avoid
+
+- **Private or unlisted demo video** (Devpost/MLH: judges cannot watch; MLH can revoke prizes).
+- **Auth wall before the wow** (Devpost present-a-demo: skip signup; GreenBorrow exists because of this).
+- **Slide-first Demo Day** (MLH: pitches are discouraged; Reskilll: code editor / terminal is debugging, not presenting).
+- **Apologizing for broken features** or showing WIP (Reskilll). Show the one path that always works.
+- **Championship landing with three equal CTAs** (SaaS CRO: one primary). `/` should not compete Play vs Create vs Vote at the same weight—Play first, vote affordance second, Create third.
+- **Dead production alias during voting** (Wanted/VentureSquare exclusion risk). Treat uptime as a contest rule, not infra nicety.
+
+### First Quest mapping (contest clock)
+
+| Window | What voters/judges do | What `/` and the tape must do |
+| --- | --- | --- |
+| Submit ~9/20 | Paste working URL + problem + AI + stack | URL 200 on `/`, `/demo`, `/create`; guest play; no real employer data |
+| Prelim + vote 9/21–10/5 | Internal review 80% + public vote 20% | Share/QR/hook; 30s self-serve play; page states the problem in one screen |
+| TOP20 → Demo Day 10/17 | 3-min live + backup video; 인기상 still vote-based | Reskilll clock; screencast backup; tape matches `/demo` |
+
+Existing 30s Korean script in `docs/submit-2026-09-20.md` is the **vote-loop** core (landing → play → E-interact → ending → optional Create). Expand that same path to 3:00 for Demo Day; do not invent a second story.

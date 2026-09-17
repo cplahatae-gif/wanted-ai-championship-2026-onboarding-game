@@ -1,0 +1,6 @@
+doctor base=https://first-quest-iota.vercel.app
+GET / -> 200
+GET /demo -> 200
+GET /create -> 200
+doctor OK
+(captured 2026-09-18 after subagent research merge + head 54275fb)
