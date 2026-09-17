@@ -39,6 +39,7 @@ export function DemoGame() {
       title="Neulbom Labs"
       subtitle="Day 0 · 신입 온보딩 RPG"
       testIdPrefix="demo"
+      statusPrefix="Day 0 · "
       reportPanel={report ? <CompletionReportPanel report={report} /> : undefined}
       intro={
         introOpen ? (

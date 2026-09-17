@@ -18,6 +18,7 @@ export function GameShell({
   intro,
   reportPanel,
   testIdPrefix = "game",
+  statusPrefix = "",
 }: {
   title: string;
   subtitle?: string;
@@ -25,6 +26,7 @@ export function GameShell({
   intro?: ReactNode;
   reportPanel?: ReactNode;
   testIdPrefix?: string;
+  statusPrefix?: string;
 }) {
   const [hud, setHud] = useState<HudDetail>({ done: 0, total: 10, title: "…" });
   const [dialogue, setDialogue] = useState<DialoguePayload | null>(null);
@@ -85,6 +87,7 @@ export function GameShell({
             />
           </div>
           <span className="fq-game-xp-text">
+            {statusPrefix}
             {hud.done}/{hud.total}
           </span>
         </div>
