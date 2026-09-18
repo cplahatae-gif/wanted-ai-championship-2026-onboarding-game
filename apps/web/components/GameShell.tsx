@@ -32,6 +32,7 @@ export function GameShell({
   const [dialogue, setDialogue] = useState<DialoguePayload | null>(null);
   const [hint, setHint] = useState<InteractHint>({ label: "", visible: false });
   const [questPop, setQuestPop] = useState<string | null>(null);
+  const [audioMuted, setAudioMuted] = useState(false);
 
   useEffect(() => {
     const onHud = (e: Event) => setHud((e as CustomEvent<HudDetail>).detail);
@@ -78,6 +79,18 @@ export function GameShell({
           <h1 className="fq-game-title">{title}</h1>
           {subtitle && <p className="fq-game-subtitle">{subtitle}</p>}
         </div>
+        <button
+          type="button"
+          className="fq-audio-btn"
+          data-testid={`${testIdPrefix}-audio-toggle`}
+          onClick={() => {
+            const next = !audioMuted;
+            setAudioMuted(next);
+            window.dispatchEvent(new CustomEvent("first-quest-audio-mute", { detail: { muted: next } }));
+          }}
+        >
+          {audioMuted ? "🔇" : "🔊"}
+        </button>
         <div className="fq-game-xp" data-testid={`${testIdPrefix}-status`}>
           <span className="fq-game-xp-label">QUEST</span>
           <div className="fq-game-xp-bar">
@@ -98,10 +111,12 @@ export function GameShell({
           <div className="fq-quest-log-head">퀘스트 로그</div>
           <p className="fq-quest-active">{hud.title}</p>
           {hud.description && <p className="fq-quest-desc">{hud.description}</p>}
-          <p className="fq-quest-controls">↑↓←→ 이동 · <kbd>E</kbd> 대화/조사</p>
+          <p className="fq-quest-controls" data-testid={`${testIdPrefix}-controls-hint`}>
+            ↑↓←→ 이동 · <kbd>E</kbd> 대화/조사
+          </p>
         </aside>
 
-        <div className="fq-game-viewport-wrap">
+        <div className="fq-game-viewport-wrap fq-scanlines">
           {questPop && <div className="fq-quest-pop">퀘스트 완료! {questPop}</div>}
           {hint.visible && (
             <div className="fq-interact-hint" data-testid={`${testIdPrefix}-interact-hint`}>

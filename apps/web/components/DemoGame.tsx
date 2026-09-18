@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { CompletionReportPanel } from "@/components/CompletionReport";
 import { GameShell } from "@/components/GameShell";
 import type { CompletionReport } from "@/game/completionReport";
+import { getRpgAudio } from "@/game/runtime/gameAudio";
 
 export function DemoGame() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +55,11 @@ export function DemoGame() {
               className="fq-btn fq-btn-play"
               style={{ marginTop: 12, padding: "10px 20px", fontSize: "0.9rem" }}
               data-testid="demo-dialogue-continue"
-              onClick={() => setIntroOpen(false)}
+              onClick={() => {
+                getRpgAudio().ensureContext();
+                getRpgAudio().startBgm();
+                setIntroOpen(false);
+              }}
             >
               모험 시작
             </button>
