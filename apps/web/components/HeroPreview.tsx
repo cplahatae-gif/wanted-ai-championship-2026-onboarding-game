@@ -6,7 +6,7 @@ export function HeroPreview() {
       <div
         style={{
           padding: "10px 14px",
-          background: "#312e81",
+          background: "#334155",
           borderBottom: "3px solid #0f172a",
           display: "flex",
           justifyContent: "space-between",

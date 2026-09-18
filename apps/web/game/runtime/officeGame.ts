@@ -15,7 +15,12 @@ import {
 } from "../questProgress";
 import { getRpgAudio } from "./gameAudio";
 import { buildOfficeTilemap } from "./officeTilemap";
-import { heroFrameFromVelocity, npcSpriteKey } from "./proceduralRpgSprites";
+import {
+  dirFromVelocity,
+  humanFrameIndex,
+  npcHumanTextureKey,
+  type WalkDir,
+} from "./officeHumanSprites";
 import { createBootScene } from "./rpgBootScene";
 
 export type GameUiState = {
@@ -54,6 +59,7 @@ export function createOfficeScene() {
     private muteHandler?: (e: Event) => void;
     private walkTick = 0;
     private stepAccumulator = 0;
+    private facing: WalkDir = "down";
 
     constructor() {
       super("office");
@@ -84,14 +90,14 @@ export function createOfficeScene() {
 
       this.physics.world.setBounds(0, 0, worldW, worldH);
       this.cameras.main.setBounds(0, 0, worldW, worldH);
-      this.cameras.main.setBackgroundColor("#0f380f");
+      this.cameras.main.setBackgroundColor("#d6d3ce");
 
       const spawn = pack.map.spawn;
       this.playerShadow = this.add.image(spawn.x * tile, spawn.y * tile + 14, "char-shadow");
-      this.player = this.physics.add.sprite(spawn.x * tile, spawn.y * tile, "hero-dude", 4);
+      this.player = this.physics.add.sprite(spawn.x * tile, spawn.y * tile, "human-player", 0);
       this.player.setCollideWorldBounds(true);
-      this.player.setSize(18, 14);
-      this.player.setOffset(7, 30);
+      this.player.setSize(16, 12);
+      this.player.setOffset(8, 28);
       this.player.setDepth(spawn.y * tile + 1);
       this.physics.add.collider(this.player, ground);
 
@@ -108,8 +114,8 @@ export function createOfficeScene() {
         const label = this.add.text(px - 24, py - 36, poi.label, {
           fontFamily: "monospace",
           fontSize: "11px",
-          color: "#9fda9f",
-          stroke: "#0f380f",
+          color: "#334155",
+          stroke: "#f8fafc",
           strokeThickness: 3,
         });
         label.setDepth(py + 2);
@@ -118,34 +124,28 @@ export function createOfficeScene() {
       for (const npc of pack.npcs) {
         const nx = npc.position.x * tile;
         const ny = npc.position.y * tile;
-        const key = npcSpriteKey(npc.id);
+        const key = npcHumanTextureKey(npc.id);
         const sprite = this.physics.add.sprite(nx, ny, key, 0);
         sprite.setImmovable(true);
         sprite.setDepth(ny + 1);
         sprite.setData("npcId", npc.id);
-        if (key === "npc-ghost") {
-          this.tweens.add({
-            targets: sprite,
-            y: ny - 6,
-            duration: 900,
-            yoyo: true,
-            repeat: -1,
-            ease: "Sine.easeInOut",
-          });
+        sprite.setFrame(`${humanFrameIndex("down", 0)}`);
+        if (npc.id.includes("security")) {
+          this.add.image(nx + 18, ny, "prop-kiosk").setDepth(ny);
         }
         this.npcSprites.set(npc.id, sprite);
         this.add
           .text(nx - 20, ny - 38, npc.name.split(" ")[0]!, {
             fontFamily: "monospace",
             fontSize: "10px",
-            color: "#e8ffe8",
-            stroke: "#0f380f",
+            color: "#1e293b",
+            stroke: "#f8fafc",
             strokeThickness: 3,
           })
           .setDepth(ny + 2);
       }
 
-      this.questMarker = this.add.image(0, 0, "quest-gem").setDepth(10000).setVisible(false).setScale(1.2);
+      this.questMarker = this.add.image(0, 0, "quest-marker").setDepth(10000).setVisible(false);
       this.tweens.add({
         targets: this.questMarker,
         scale: { from: 1.1, to: 1.45 },
@@ -201,14 +201,15 @@ export function createOfficeScene() {
       const moving = vx !== 0 || vy !== 0;
       if (moving) {
         this.walkTick++;
-        this.player.setFrame(heroFrameFromVelocity(vx, vy, this.walkTick));
+        this.facing = dirFromVelocity(vx, vy, this.facing);
+        this.player.setFrame(humanFrameIndex(this.facing, this.walkTick));
         this.stepAccumulator += delta;
         if (this.stepAccumulator > 280) {
           this.stepAccumulator = 0;
           getRpgAudio().playSfx("step");
         }
       } else {
-        this.player.setFrame(4);
+        this.player.setFrame(humanFrameIndex(this.facing, 0));
       }
 
       this.player.setDepth(this.player.y);
@@ -440,7 +441,7 @@ export function mountOfficeGame(
     physics: { default: "arcade", arcade: { debug: false } },
     scene: [BootScene, OfficeScene],
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    backgroundColor: "#0f380f",
+    backgroundColor: "#d6d3ce",
     pixelArt: true,
     antialias: false,
   });

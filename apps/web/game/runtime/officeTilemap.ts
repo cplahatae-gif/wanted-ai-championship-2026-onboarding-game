@@ -1,21 +1,10 @@
 import type { GamePack } from "gamepack-schema";
 import type Phaser from "phaser";
-
-/** catastrophi_tiles_16.png — 28×5 @16px (Phaser examples, MIT) */
-export const CATA = {
-  FLOOR: 68,
-  FLOOR_ALT: 69,
-  CARPET: 72,
-  WALL: 117,
-  WALL_FACE: 114,
-  BLOCK: 126,
-  CRATE: 125,
-} as const;
-
-const COLLISION_TILES = [CATA.WALL, CATA.WALL_FACE, CATA.BLOCK, CATA.CRATE];
+import { OFFICE_TILE, officeCollisionTiles } from "./officeHumanSprites";
 
 export type OfficeMapBuild = {
   ground: Phaser.Tilemaps.TilemapLayer;
+  props: Phaser.GameObjects.Group;
 };
 
 export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeMapBuild {
@@ -24,9 +13,9 @@ export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeM
   const h = pack.map.height;
 
   const map = scene.make.tilemap({ tileWidth: tw, tileHeight: tw, width: w, height: h });
-  const tileset = map.addTilesetImage("cata", "cata-tiles", 16, 16, 0, 0, 1);
+  const tileset = map.addTilesetImage("office", "office-tiles", 32, 32, 0, 0, 1);
   if (!tileset) {
-    throw new Error("tileset missing");
+    throw new Error("office tileset missing");
   }
 
   const ground = map.createBlankLayer("ground", tileset, 0, 0, w, h)!;
@@ -38,23 +27,25 @@ export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeM
     for (let x = 0; x < w; x++) {
       const border = x === 0 || y === 0 || x === w - 1 || y === h - 1;
       if (border) {
-        data[y]![x] = CATA.WALL;
-      } else if ((x + y) % 7 === 0) {
-        data[y]![x] = CATA.FLOOR_ALT;
+        data[y]![x] = OFFICE_TILE.WALL;
+      } else if (x >= 10 && x <= 14 && y >= 4 && y <= 8) {
+        data[y]![x] = OFFICE_TILE.PARTITION;
+      } else if (x % 6 === 0 && y > 2 && y < h - 2) {
+        data[y]![x] = OFFICE_TILE.CARPET_STRIP;
       } else {
-        data[y]![x] = CATA.FLOOR;
+        data[y]![x] = OFFICE_TILE.CARPET;
       }
     }
   }
 
   const sx = pack.map.spawn.x;
   const sy = pack.map.spawn.y;
-  for (let dy = -1; dy <= 1; dy++) {
-    for (let dx = -1; dx <= 1; dx++) {
+  for (let dy = -2; dy <= 2; dy++) {
+    for (let dx = -2; dx <= 2; dx++) {
       const yy = sy + dy;
       const xx = sx + dx;
-      if (data[yy]?.[xx] !== undefined && data[yy]![xx] !== CATA.WALL) {
-        data[yy]![xx] = CATA.CARPET;
+      if (data[yy]?.[xx] !== undefined && data[yy]![xx] !== OFFICE_TILE.WALL) {
+        data[yy]![xx] = OFFICE_TILE.RECEPTION;
       }
     }
   }
@@ -62,11 +53,17 @@ export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeM
   for (const poi of pack.pois) {
     const px = poi.position.x;
     const py = poi.position.y;
-    if (poi.id.includes("desk") && data[py]?.[px] !== CATA.WALL) {
-      data[py]![px] = CATA.BLOCK;
+    if (poi.id.includes("desk") && data[py]?.[px] !== OFFICE_TILE.WALL) {
+      data[py]![px] = OFFICE_TILE.DESK;
     }
-    if ((poi.id.includes("kitchen") || poi.id.includes("lab")) && data[py]?.[px] !== CATA.WALL) {
-      data[py]![px] = CATA.CRATE;
+    if (poi.id.includes("kitchen") && data[py]?.[px] !== OFFICE_TILE.WALL) {
+      data[py]![px] = OFFICE_TILE.BREAK;
+    }
+    if (poi.id.includes("lab") && data[py]?.[px] !== OFFICE_TILE.WALL) {
+      data[py]![px] = OFFICE_TILE.LAB;
+    }
+    if (poi.id.includes("hr") && data[py]?.[px] !== OFFICE_TILE.WALL) {
+      data[py]![px] = OFFICE_TILE.CARPET_STRIP;
     }
   }
 
@@ -76,7 +73,23 @@ export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeM
     }
   }
 
-  ground.setCollision(COLLISION_TILES);
+  ground.setCollision(officeCollisionTiles());
 
-  return { ground };
+  const props = scene.add.group();
+  for (const poi of pack.pois) {
+    const px = poi.position.x * tw;
+    const py = poi.position.y * tw;
+    if (poi.id.includes("desk")) {
+      const d = scene.add.image(px, py, "prop-desk-lg");
+      d.setDepth(py);
+      props.add(d);
+    }
+    if (poi.id.includes("kitchen") || poi.id.includes("lab")) {
+      const p = scene.add.image(px, py - 4, "prop-plant-lg");
+      p.setDepth(py);
+      props.add(p);
+    }
+  }
+
+  return { ground, props };
 }
