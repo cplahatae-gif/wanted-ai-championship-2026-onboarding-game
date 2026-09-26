@@ -13,15 +13,17 @@ import {
   setFlag,
   type QuestProgress,
 } from "../questProgress";
-import { getRpgAudio } from "./gameAudio";
-import { buildOfficeTilemap } from "./officeTilemap";
 import {
   dirFromVelocity,
   humanFrameIndex,
-  npcHumanTextureKey,
+  npcTextureKey,
   type WalkDir,
-} from "./officeHumanSprites";
+} from "./classicRetroArt";
+import { getRpgAudio } from "./gameAudio";
+import { buildOfficeTilemap } from "./officeTilemap";
 import { createBootScene } from "./rpgBootScene";
+
+const SPRITE_SCALE = 2;
 
 export type GameUiState = {
   progress: QuestProgress;
@@ -73,7 +75,6 @@ export function createOfficeScene() {
     create() {
       const pack = this.pack;
       const storageKey = this.storageKey;
-      const lastQuestId = pack.quests[pack.quests.length - 1]?.id;
       const tile = pack.map.tileSize;
       const worldW = pack.map.width * tile;
       const worldH = pack.map.height * tile;
@@ -90,19 +91,22 @@ export function createOfficeScene() {
 
       this.physics.world.setBounds(0, 0, worldW, worldH);
       this.cameras.main.setBounds(0, 0, worldW, worldH);
-      this.cameras.main.setBackgroundColor("#d6d3ce");
+      this.cameras.main.setBackgroundColor("#8b8b8b");
 
       const spawn = pack.map.spawn;
-      this.playerShadow = this.add.image(spawn.x * tile, spawn.y * tile + 14, "char-shadow");
-      this.player = this.physics.add.sprite(spawn.x * tile, spawn.y * tile, "human-player", 0);
+      this.playerShadow = this.add
+        .image(spawn.x * tile, spawn.y * tile + 10, "char-shadow")
+        .setScale(SPRITE_SCALE);
+      this.player = this.physics.add.sprite(spawn.x * tile, spawn.y * tile, "char-player", 0);
+      this.player.setScale(SPRITE_SCALE);
       this.player.setCollideWorldBounds(true);
-      this.player.setSize(16, 12);
-      this.player.setOffset(8, 28);
+      this.player.setSize(10, 8);
+      this.player.setOffset(3, 12);
       this.player.setDepth(spawn.y * tile + 1);
       this.physics.add.collider(this.player, ground);
 
       this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
-      this.cameras.main.setZoom(1.35);
+      this.cameras.main.setZoom(1.5);
       this.cameras.main.setRoundPixels(true);
 
       for (const poi of pack.pois) {
@@ -111,48 +115,54 @@ export function createOfficeScene() {
         const zone = this.add.zone(px, py, poi.radius * 1.5, poi.radius * 1.5);
         this.physics.add.existing(zone, true);
         this.poiZones.push({ id: poi.id, zone, label: poi.label });
-        const label = this.add.text(px - 24, py - 36, poi.label, {
-          fontFamily: "monospace",
-          fontSize: "11px",
-          color: "#334155",
-          stroke: "#f8fafc",
-          strokeThickness: 3,
-        });
-        label.setDepth(py + 2);
+        this.add
+          .text(px - 24, py - 28, poi.label, {
+            fontFamily: '"Courier New", monospace',
+            fontSize: "10px",
+            color: "#1a1c2c",
+            stroke: "#fff1e8",
+            strokeThickness: 2,
+          })
+          .setDepth(py + 2)
+          .setScale(1);
       }
 
       for (const npc of pack.npcs) {
         const nx = npc.position.x * tile;
         const ny = npc.position.y * tile;
-        const key = npcHumanTextureKey(npc.id);
+        const key = npcTextureKey(npc.id);
         const sprite = this.physics.add.sprite(nx, ny, key, 0);
+        sprite.setScale(SPRITE_SCALE);
         sprite.setImmovable(true);
         sprite.setDepth(ny + 1);
         sprite.setData("npcId", npc.id);
         sprite.setFrame(`${humanFrameIndex("down", 0)}`);
         if (npc.id.includes("security")) {
-          this.add.image(nx + 18, ny, "prop-kiosk").setDepth(ny);
+          this.add.image(nx + 20, ny, "prop-kiosk").setScale(SPRITE_SCALE).setDepth(ny);
         }
         this.npcSprites.set(npc.id, sprite);
         this.add
-          .text(nx - 20, ny - 38, npc.name.split(" ")[0]!, {
-            fontFamily: "monospace",
-            fontSize: "10px",
-            color: "#1e293b",
-            stroke: "#f8fafc",
-            strokeThickness: 3,
+          .text(nx - 18, ny - 30, npc.name.split(" ")[0]!, {
+            fontFamily: '"Courier New", monospace',
+            fontSize: "9px",
+            color: "#1a1c2c",
+            stroke: "#fff1e8",
+            strokeThickness: 2,
           })
           .setDepth(ny + 2);
       }
 
-      this.questMarker = this.add.image(0, 0, "quest-marker").setDepth(10000).setVisible(false);
+      this.questMarker = this.add
+        .image(0, 0, "quest-marker")
+        .setDepth(10000)
+        .setVisible(false)
+        .setScale(SPRITE_SCALE);
       this.tweens.add({
         targets: this.questMarker,
-        scale: { from: 1.1, to: 1.45 },
-        alpha: { from: 0.85, to: 1 },
+        y: "-=4",
         yoyo: true,
         repeat: -1,
-        duration: 500,
+        duration: 450,
       });
 
       this.cursors = this.input.keyboard!.createCursorKeys();
@@ -188,7 +198,7 @@ export function createOfficeScene() {
         return;
       }
 
-      const speed = 155;
+      const speed = 160;
       let vx = 0;
       let vy = 0;
       if (this.cursors.left?.isDown) vx = -speed;
@@ -202,18 +212,18 @@ export function createOfficeScene() {
       if (moving) {
         this.walkTick++;
         this.facing = dirFromVelocity(vx, vy, this.facing);
-        this.player.setFrame(humanFrameIndex(this.facing, this.walkTick));
+        this.player.setFrame(`${humanFrameIndex(this.facing, this.walkTick)}`);
         this.stepAccumulator += delta;
-        if (this.stepAccumulator > 280) {
+        if (this.stepAccumulator > 260) {
           this.stepAccumulator = 0;
           getRpgAudio().playSfx("step");
         }
       } else {
-        this.player.setFrame(humanFrameIndex(this.facing, 0));
+        this.player.setFrame(`${humanFrameIndex(this.facing, 0)}`);
       }
 
       this.player.setDepth(this.player.y);
-      this.playerShadow.setPosition(this.player.x, this.player.y + 16);
+      this.playerShadow.setPosition(this.player.x, this.player.y + 14);
       this.playerShadow.setDepth(this.player.y - 1);
 
       for (const npc of this.npcSprites.values()) {
@@ -250,19 +260,19 @@ export function createOfficeScene() {
         const npc = this.npcSprites.get(active.objective.npcId);
         if (npc) {
           tx = npc.x;
-          ty = npc.y - 32;
+          ty = npc.y - 24;
         }
       } else if (active.objective.type === "reach" || active.objective.type === "interact") {
         const poi = poiById(pack, active.objective.poiId);
         if (poi) {
           tx = poi.position.x * pack.map.tileSize;
-          ty = poi.position.y * pack.map.tileSize - 28;
+          ty = poi.position.y * pack.map.tileSize - 22;
         }
       } else if (active.objective.type === "flag") {
         const npc = this.npcSprites.get("npc-security") ?? this.npcSprites.get("npc-hr");
         if (npc) {
           tx = npc.x;
-          ty = npc.y - 32;
+          ty = npc.y - 24;
         }
       }
       if (tx && ty) {
@@ -330,7 +340,7 @@ export function createOfficeScene() {
             emitDialogue(null);
           });
         }
-        this.cameras.main.flash(100, 200, 255, 180, false);
+        this.cameras.main.flash(100, 255, 255, 220, false);
         return;
       }
 
@@ -361,10 +371,10 @@ export function createOfficeScene() {
 
     private burstParticles(x: number, y: number) {
       const particles = this.add.particles(x, y, "particle-spark", {
-        speed: { min: 50, max: 140 },
-        lifespan: 450,
-        scale: { start: 1.2, end: 0 },
-        quantity: 10,
+        speed: { min: 40, max: 120 },
+        lifespan: 400,
+        scale: { start: 2, end: 0 },
+        quantity: 8,
         blendMode: "ADD",
       });
       this.time.delayedCall(500, () => particles.destroy());
@@ -377,7 +387,7 @@ export function createOfficeScene() {
         this.ui.progress = completeQuest(this.ui.progress, active);
         saveProgressToStorage(this.ui.progress, storageKey);
         this.burstParticles(this.player.x, this.player.y - 12);
-        this.cameras.main.shake(140, 0.005);
+        this.cameras.main.shake(120, 0.004);
         getRpgAudio().playSfx("quest");
         if (typeof window !== "undefined") {
           window.dispatchEvent(
@@ -429,7 +439,7 @@ export function mountOfficeGame(
   pack: GamePack,
   options?: { storageKey?: string },
 ): Phaser.Game {
-  const storageKey = options?.storageKey ?? "first-quest-neulbom-progress-v4";
+  const storageKey = options?.storageKey ?? "first-quest-neulbom-progress-v5";
   const BootScene = createBootScene("office");
   const OfficeScene = createOfficeScene();
 
@@ -441,9 +451,10 @@ export function mountOfficeGame(
     physics: { default: "arcade", arcade: { debug: false } },
     scene: [BootScene, OfficeScene],
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-    backgroundColor: "#d6d3ce",
+    backgroundColor: "#8b8b8b",
     pixelArt: true,
     antialias: false,
+    roundPixels: true,
   });
 
   game.registry.set("gamePack", pack);

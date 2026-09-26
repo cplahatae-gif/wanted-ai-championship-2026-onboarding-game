@@ -1,9 +1,9 @@
 import type { GamePack } from "gamepack-schema";
 import * as Phaser from "phaser";
 import {
-  registerAllOfficeHumans,
-  registerOfficeEnvironment,
-} from "./officeHumanSprites";
+  createClassicTextures,
+  preloadClassicAssets,
+} from "./classicRetroArt";
 import { registerVfxTextures } from "./proceduralRpgSprites";
 
 export function createBootScene(nextSceneKey: string) {
@@ -13,13 +13,12 @@ export function createBootScene(nextSceneKey: string) {
     }
 
     preload() {
-      /* Office + humans are procedural textures (create phase). */
+      preloadClassicAssets(this);
     }
 
     create() {
       const pack = this.registry.get("gamePack") as GamePack;
-      registerOfficeEnvironment(this);
-      registerAllOfficeHumans(this);
+      createClassicTextures(this);
       registerVfxTextures(this, pack);
       this.scene.start(nextSceneKey);
     }

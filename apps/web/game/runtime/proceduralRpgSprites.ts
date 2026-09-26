@@ -8,11 +8,13 @@ function hex(n: string): number {
 export function registerVfxTextures(scene: Phaser.Scene, pack: GamePack): void {
   const accent = hex(pack.visual.palette[2] ?? "#e94560");
 
-  const shadow = scene.make.graphics({}, false);
-  shadow.fillStyle(0x000000, 0.28);
-  shadow.fillEllipse(16, 10, 26, 10);
-  shadow.generateTexture("char-shadow", 32, 16);
-  shadow.destroy();
+  if (!scene.textures.exists("char-shadow")) {
+    const shadow = scene.make.graphics({}, false);
+    shadow.fillStyle(0x000000, 0.28);
+    shadow.fillEllipse(16, 10, 26, 10);
+    shadow.generateTexture("char-shadow", 32, 16);
+    shadow.destroy();
+  }
 
   const spark = scene.make.graphics({}, false);
   spark.fillStyle(0xffffff, 1);
