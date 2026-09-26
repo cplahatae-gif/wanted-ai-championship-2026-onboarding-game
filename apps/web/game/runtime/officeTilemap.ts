@@ -1,12 +1,17 @@
 import type { GamePack } from "gamepack-schema";
 import type Phaser from "phaser";
-import { T, TILE_COLLISION } from "./classicRetroArt";
+import { T as CLASSIC_T, TILE_COLLISION as CLASSIC_COLLISION } from "./classicRetroArt";
+import { KENNEY_T, KENNEY_TILE_COLLISION } from "./kenneyTiles";
 
 export type OfficeMapBuild = {
   ground: Phaser.Tilemaps.TilemapLayer;
 };
 
 export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeMapBuild {
+  const kenney = scene.registry.get("visualTier") === "kenney";
+  const T = kenney ? KENNEY_T : CLASSIC_T;
+  const collision = kenney ? KENNEY_TILE_COLLISION : CLASSIC_COLLISION;
+
   const tw = 16;
   const displayScale = 2;
   const w = pack.map.width;
@@ -60,7 +65,7 @@ export function buildOfficeTilemap(scene: Phaser.Scene, pack: GamePack): OfficeM
     }
   }
 
-  ground.setCollision(TILE_COLLISION);
+  ground.setCollision(collision);
 
   return { ground };
 }

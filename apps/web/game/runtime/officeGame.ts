@@ -213,6 +213,7 @@ export function createOfficeScene() {
         this.walkTick++;
         this.facing = dirFromVelocity(vx, vy, this.facing);
         this.player.setFrame(`${humanFrameIndex(this.facing, this.walkTick)}`);
+        this.player.setFlipX(this.facing === "left");
         this.stepAccumulator += delta;
         if (this.stepAccumulator > 260) {
           this.stepAccumulator = 0;
@@ -220,6 +221,7 @@ export function createOfficeScene() {
         }
       } else {
         this.player.setFrame(`${humanFrameIndex(this.facing, 0)}`);
+        this.player.setFlipX(this.facing === "left");
       }
 
       this.player.setDepth(this.player.y);
@@ -439,7 +441,7 @@ export function mountOfficeGame(
   pack: GamePack,
   options?: { storageKey?: string },
 ): Phaser.Game {
-  const storageKey = options?.storageKey ?? "first-quest-neulbom-progress-v5";
+  const storageKey = options?.storageKey ?? "first-quest-neulbom-progress-v6";
   const BootScene = createBootScene("office");
   const OfficeScene = createOfficeScene();
 
